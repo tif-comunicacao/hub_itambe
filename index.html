@@ -3,38 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Tif</title>
+    <title>Dashboard | Tif</title>
     <style>
-        /* Remove qualquer respiro ou margem da página */
+        /* Reseta o comportamento padrão do navegador */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        /* Garante que o fundo da página não tenha barras de rolagem */
         body, html {
             height: 100%;
             width: 100%;
-            overflow: hidden; /* Trava a rolagem da página principal */
-            background-color: #f5f5f5; /* Cor de fundo padrão do Looker */
+            overflow: hidden; 
+            background-color: #f5f5f5; /* Cor cinza padrão do Looker */
         }
 
-        /* Faz o iframe ocupar exatamente o tamanho da janela do navegador */
-        iframe {
+        /* Container que servirá como uma "moldura" para cortar o que sobra */
+        .dashboard-wrapper {
+            position: relative;
             width: 100vw;
             height: 100vh;
+            overflow: hidden; /* Corta qualquer coisa que saia dos limites da tela */
+        }
+
+        /* O IFrame fica um pouco maior que a tela para esconder o rodapé do Google */
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            /* Aumentamos 36px na altura para jogar a barra de privacidade para baixo */
+            height: calc(100vh + 36px); 
             border: none;
-            display: block;
         }
     </style>
 </head>
 <body>
 
-    <iframe 
-        src="https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF?navBar=hidden" 
-        allowfullscreen 
-        sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
-    </iframe>
+    <div class="dashboard-wrapper">
+        <iframe 
+            src="https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF?navBar=hidden" 
+            allowfullscreen 
+            sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
+        </iframe>
+    </div>
 
 </body>
 </html>
