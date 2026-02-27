@@ -3,52 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Tif</title>
+    <title>Dashboard Tif</title>
     <style>
-        /* Reseta o comportamento padrão do navegador */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* Garante que o fundo da página não tenha barras de rolagem */
         body, html {
             height: 100%;
             width: 100%;
-            overflow: hidden; 
-            background-color: #f5f5f5; /* Cor cinza padrão do Looker */
+            overflow: hidden;
+            background-color: #f5f5f5;
         }
 
-        /* Container que servirá como uma "moldura" para cortar o que sobra */
-        .dashboard-wrapper {
-            position: relative;
+        /* Botão flutuante para não interferir no layout do dash */
+        .btn-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 999;
+            padding: 10px 20px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: sans-serif;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .btn-toggle:hover {
+            background-color: #333;
+        }
+
+        iframe {
             width: 100vw;
             height: 100vh;
-            overflow: hidden; /* Corta qualquer coisa que saia dos limites da tela */
-        }
-
-        /* O IFrame fica um pouco maior que a tela para esconder o rodapé do Google */
-        iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            /* Aumentamos 36px na altura para jogar a barra de privacidade para baixo */
-            height: calc(100vh + 36px); 
             border: none;
+            display: block;
         }
     </style>
 </head>
 <body>
 
-    <div class="dashboard-wrapper">
-        <iframe 
-            src="https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF?navBar=hidden" 
-            allowfullscreen 
-            sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
-        </iframe>
-    </div>
+    <button class="btn-toggle" onclick="toggleView()">Alternar Gráfico</button>
+
+    <iframe 
+        id="dashTif"
+        src="https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF?navBar=hidden" 
+        allowfullscreen 
+        sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
+    </iframe>
+
+    <script>
+        function toggleView() {
+            const iframe = document.getElementById('dashTif');
+            
+            // Defina aqui as URLs das duas páginas do seu Looker Studio
+            const paginaComGrafico = "https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF?navBar=hidden";
+            const paginaSemGrafico = "https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/ID_DA_OUTRA_PAGINA?navBar=hidden";
+
+            // Se a URL atual for a da página 1, muda para a 2, e vice-versa
+            if (iframe.src === paginaComGrafico) {
+                iframe.src = paginaSemGrafico;
+            } else {
+                iframe.src = paginaComGrafico;
+            }
+        }
+    </script>
 
 </body>
 </html>
+
