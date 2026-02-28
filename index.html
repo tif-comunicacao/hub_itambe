@@ -3,141 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Tif - Rio Bonito</title>
+    <title>Hub de Performance - Grupo Itambé</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body, html { 
-            height: 100%; 
-            width: 100%; 
-            overflow: hidden; 
-            background-color: #f5f5f5; /* Cor de fundo padrão do Looker */
-            font-family: 'Segoe UI', Arial, sans-serif;
-            display: flex;
-        }
+        body, html { height: 100%; width: 100%; overflow: hidden; background-color: #f5f5f5; font-family: 'Segoe UI', Arial, sans-serif; display: flex; flex-direction: column; }
 
-        /* Container Principal do Dash */
-        .main-content {
-            flex-grow: 1;
-            position: relative;
-            overflow: hidden;
+        /* CABEÇALHO HTML */
+        .header-tif {
+            height: 70px; background-color: #004a20; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; z-index: 10000;
         }
+        .brand-section { display: flex; align-items: center; gap: 15px; }
+        .brand-logo { color: white; font-weight: 800; font-style: italic; font-size: 20px; letter-spacing: -1px; }
+        .divider { width: 1px; height: 25px; background-color: rgba(255,255,255,0.5); }
+        .unit-display { color: #2ecc71; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; }
 
+        .nav-units { display: flex; gap: 10px; }
+        .btn-unit {
+            padding: 10px 18px; background-color: #003316; color: #ffffff; border: 1px solid #2ecc71; border-radius: 4px;
+            cursor: pointer; font-size: 11px; font-weight: bold; text-transform: uppercase; transition: 0.2s;
+        }
+        .btn-unit.active-unit { background-color: #6fb06e; color: #111; border: 2px solid #ffffff; }
+
+        /* ÁREA DO DASHBOARD */
+        .main-container { flex-grow: 1; display: flex; position: relative; }
+        .dash-area { flex-grow: 1; position: relative; overflow: hidden; }
         iframe {
-            position: absolute;
-            top: -2px; 
-            left: -2px;
-            width: calc(100% + 4px);
-            height: calc(100% + 50px); /* Esconde o rodapé estático do Looker */
-            border: none;
-            transition: opacity 0.3s ease-in-out;
+            position: absolute; top: -65px; left: -2px; width: calc(100% + 4px); height: calc(100% + 120px); border: none; transition: opacity 0.3s;
         }
 
-        /* Classes de Visibilidade */
-        .active { z-index: 10; opacity: 1; }
-        .background { z-index: 1; opacity: 0; pointer-events: none; }
-
-        /* Menu Flutuante na Direita (Área do X) */
-        .floating-menu {
-            position: fixed;
-            right: 60px; /* Recuo da borda direita conforme solicitado */
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            z-index: 9999;
-            opacity: 0; /* Começa invisível para o delay de carregamento */
-            transition: opacity 0.8s ease-in-out;
+        /* MENU LATERAL DINÂMICO */
+        .platform-menu {
+            position: fixed; right: 50px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 10px; z-index: 9999;
         }
+        .menu-group { display: none; flex-direction: column; gap: 8px; }
+        .menu-group.active-group { display: flex; }
 
-        /* Botão Suave Estilo Tab */
-        .btn-tab {
-            width: 140px;
-            padding: 10px 12px;
-            background-color: #ffffff;
-            color: #5f6368;
-            border: 1px solid #dadce0;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: 600;
-            text-align: center;
-            text-transform: uppercase;
-            box-shadow: 0 1px 3px rgba(60,64,67,0.1);
-            transition: all 0.2s ease;
+        .btn-plat {
+            width: 140px; padding: 12px; background: white; border: 1px solid #dadce0; border-radius: 6px;
+            cursor: pointer; font-size: 10px; font-weight: 600; text-transform: uppercase; box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
+        .btn-plat.active-plat { background: #e8f5e9; color: #2e7d32; border-color: #2e7d32; }
 
-        .btn-tab:hover {
-            background-color: #f8f9fa;
-            border-color: #2e7d32;
-            color: #2e7d32;
-        }
-
-        /* Aba Ativa (Verde Itambé Suave) */
-        .btn-tab.active-tab {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-            border: 1px solid #2e7d32;
-        }
-
-        /* Bloqueio do rodapé flutuante (Hover do Looker) */
-        .mouse-blocker {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 55px;
-            z-index: 100;
-            background: transparent;
-        }
+        .mouse-blocker { position: absolute; bottom: 0; left: 0; width: 100%; height: 55px; z-index: 100; background: transparent; }
     </style>
 </head>
 <body>
 
-    <div class="main-content">
-        <div class="mouse-blocker"></div>
-
-        <iframe id="rio_meta" class="active" src="https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF"></iframe>
-        <iframe id="rio_google" class="background" src="https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/p_4gxmokec1d"></iframe>
-        <iframe id="rio_linkedin" class="background" src="LINK_EMBED_LINKEDIN_RIO_BONITO"></iframe>
-        <iframe id="rio_search" class="background" src="LINK_EMBED_SEARCH_RIO_BONITO"></iframe>
-        <iframe id="rio_ga4" class="background" src="LINK_EMBED_GA4_RIO_BONITO"></iframe>
-
-        <div id="ui-menu" class="floating-menu">
-            <button class="btn-tab active-tab" onclick="changeDash('rio_meta', this)">Meta Ads</button>
-            <button class="btn-tab" onclick="changeDash('rio_google', this)">Google Ads</button>
-            <button class="btn-tab" onclick="changeDash('rio_linkedin', this)">LinkedIn</button>
-            <button class="btn-tab" onclick="changeDash('rio_search', this)">Search</button>
-            <button class="btn-tab" onclick="changeDash('rio_ga4', this)">Analytics</button>
+    <header class="header-tif">
+        <div class="brand-section">
+            <div class="brand-logo">GRUPO ITAMBÉ</div>
+            <div class="divider"></div>
+            <div id="current-unit-label" class="unit-display">RIO BONITO</div>
         </div>
+        <nav class="nav-units">
+            <button class="btn-unit active-unit" onclick="switchFullContext('RIO BONITO', 'rio', 'url_meta_rio', this)">Rio Bonito</button>
+            <button class="btn-unit" onclick="switchFullContext('CIMENTO ITAMBÉ', 'itambe', 'url_meta_itambe', this)">Cimento Itambé</button>
+            <button class="btn-unit" onclick="switchFullContext('CONCREBRAS', 'concrebras', 'url_meta_concre', this)">Concrebras</button>
+            <button class="btn-unit" onclick="switchFullContext('ENERGÉTICA', 'energetica', 'url_meta_ener', this)">Energética</button>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        <div class="dash-area">
+            <div class="mouse-blocker"></div>
+            <iframe id="main-iframe" src="https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF"></iframe>
+        </div>
+
+        <div class="platform-menu">
+            <div id="menu-rio" class="menu-group active-group">
+                <button class="btn-plat active-plat" onclick="changeIframe('url_meta_rio', this)">Meta Ads</button>
+                <button class="btn-plat" onclick="changeIframe('url_google_rio', this)">Google Ads</button>
+                <button class="btn-plat" onclick="changeIframe('url_ga4_rio', this)">Analytics</button>
+            </div>
+            <div id="menu-itambe" class="menu-group">
+                <button class="btn-plat active-plat" onclick="changeIframe('url_meta_itambe', this)">Meta Ads</button>
+                <button class="btn-plat" onclick="changeIframe('url_google_itambe', this)">Google Ads</button>
+                <button class="btn-plat" onclick="changeIframe('url_ga4_itambe', this)">Analytics</button>
+            </div>
+            </div>
     </div>
 
     <script>
-        // O menu aparece suavemente após o carregamento inicial da página
-        window.onload = function() {
+        const iframe = document.getElementById('main-iframe');
+
+        // 1. Troca a EMPRESA (Unidade)
+        function switchFullContext(unitName, menuKey, initialUrl, btn) {
+            // Atualiza Label e Botões de Unidade
+            document.getElementById('current-unit-label').innerText = unitName;
+            document.querySelectorAll('.btn-unit').forEach(b => b.classList.remove('active-unit'));
+            btn.classList.add('active-unit');
+
+            // Troca o Menu Lateral
+            document.querySelectorAll('.menu-group').forEach(g => g.classList.remove('active-group'));
+            document.getElementById('menu-' + menuKey).classList.add('active-group');
+
+            // Carrega o primeiro dash daquela empresa
+            changeIframe(initialUrl, document.getElementById('menu-' + menuKey).querySelector('.btn-plat'));
+        }
+
+        // 2. Troca apenas a PLATAFORMA
+        function changeIframe(url, btn) {
+            iframe.style.opacity = '0';
             setTimeout(() => {
-                document.getElementById('ui-menu').style.opacity = '1';
-            }, 800);
-        };
+                iframe.src = url;
+                iframe.style.opacity = '1';
+            }, 300);
 
-        // Função de troca instantânea entre os iframes
-        function changeDash(targetId, btnElement) {
-            document.querySelectorAll('iframe').forEach(iframe => {
-                iframe.classList.replace('active', 'background');
-            });
-            const target = document.getElementById(targetId);
-            if(target) target.classList.replace('background', 'active');
-
-            // Atualiza o destaque do botão
-            document.querySelectorAll('.btn-tab').forEach(btn => {
-                btn.classList.remove('active-tab');
-            });
-            btnElement.classList.add('active-tab');
+            // Estilo do botão lateral
+            btn.parentElement.querySelectorAll('.btn-plat').forEach(b => b.classList.remove('active-plat'));
+            btn.classList.add('active-plat');
         }
     </script>
 </body>
 </html>
+
 
 
 
