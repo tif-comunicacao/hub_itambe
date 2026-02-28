@@ -35,19 +35,21 @@
         .active { z-index: 10; opacity: 1; }
         .background { z-index: 1; opacity: 0; pointer-events: none; }
 
-        /* MENU FLUTUANTE AJUSTADO */
+        /* MENU FLUTUANTE COM OPACIDADE INICIAL ZERO */
         .floating-menu {
             position: fixed;
-            right: 60px; /* Aumentei aqui para afastar da borda direita conforme seu pedido */
+            right: 60px; 
             top: 50%;
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
             gap: 12px;
             z-index: 9999;
+            /* Inicia invisível */
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
         }
 
-        /* Estilo Suave e Discreto */
         .btn-tab {
             width: 120px;
             padding: 10px;
@@ -76,7 +78,6 @@
             border: 1px solid #2e7d32;
         }
 
-        /* Bloqueio do Rodapé do Looker */
         .mouse-blocker {
             position: absolute;
             bottom: 0;
@@ -100,7 +101,7 @@
         <iframe id="dashSearch" class="background" src=""></iframe>
         <iframe id="dashGA4" class="background" src=""></iframe>
 
-        <div class="floating-menu">
+        <div id="ui-menu" class="floating-menu">
             <button class="btn-tab active-tab" onclick="changeDash('dashMeta', this)">Meta Ads</button>
             <button class="btn-tab" onclick="changeDash('dashGoogle', this)">Google Ads</button>
             <button class="btn-tab" onclick="changeDash('dashLinkedin', this)">LinkedIn</button>
@@ -110,15 +111,22 @@
     </div>
 
     <script>
+        // Sincronização: O menu só aparece quando a janela termina de carregar
+        window.onload = function() {
+            const menu = document.getElementById('ui-menu');
+            // Pequeno delay adicional de 500ms para garantir que o iframe começou a renderizar
+            setTimeout(() => {
+                menu.style.opacity = '1';
+            }, 500);
+        };
+
         function changeDash(targetId, btnElement) {
-            // Troca de Dashboard
             document.querySelectorAll('iframe').forEach(iframe => {
                 iframe.classList.replace('active', 'background');
             });
             const target = document.getElementById(targetId);
             if(target) target.classList.replace('background', 'active');
 
-            // Troca de Estilo do Botão
             document.querySelectorAll('.btn-tab').forEach(btn => {
                 btn.classList.remove('active-tab');
             });
@@ -127,7 +135,6 @@
     </script>
 </body>
 </html>
-
 
 
 
