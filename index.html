@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Performance - Grupo Itambé</title>
+    <title>Dashboard Tif - Grupo Itambé</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { height: 100%; width: 100%; overflow: hidden; background-color: #f5f5f5; font-family: 'Segoe UI', Arial, sans-serif; }
+        body, html { height: 100%; width: 100%; overflow: hidden; background-color: #f5f5f5; font-family: 'Segoe UI', Arial, sans-serif; display: flex; }
 
-        .main-content { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
-
+        /* Dashboard Principal */
+        .main-content { flex-grow: 1; position: relative; overflow: hidden; }
         iframe {
             position: absolute;
             top: -2px; left: -2px;
@@ -22,45 +22,45 @@
         .active { z-index: 10; opacity: 1; }
         .background { z-index: 1; opacity: 0; pointer-events: none; }
 
-        /* MENU FLUTUANTE */
+        /* Menu Flutuante na Lateral Direita (Onde estava o X) */
         .floating-menu {
             position: fixed;
-            right: 60px;
+            right: 50px;
             top: 50%;
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             z-index: 9999;
             opacity: 0;
             transition: opacity 0.8s ease-in-out;
         }
 
-        /* Grupos de Submenus - Escondidos por padrão */
-        .menu-group { display: none; flex-direction: column; gap: 10px; }
-        .menu-group.active-group { display: flex; }
+        /* Grupos de Menus (Invisíveis até serem chamados) */
+        .menu-group { display: none; flex-direction: column; gap: 8px; }
+        .active-group { display: flex; }
 
+        .group-label { font-size: 9px; color: #757575; text-align: center; margin-bottom: 5px; letter-spacing: 1px; font-weight: bold; }
+
+        /* Botões Estilo Suave Tab */
         .btn-tab {
             width: 140px;
             padding: 10px;
             background-color: #ffffff;
             color: #5f6368;
             border: 1px solid #dadce0;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 10px;
             font-weight: 600;
             text-align: center;
             text-transform: uppercase;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            transition: all 0.2s ease;
+            transition: 0.2s;
         }
 
         .btn-tab:hover { border-color: #2e7d32; color: #2e7d32; }
         .btn-tab.active-tab { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #2e7d32; }
-
-        /* Título do Menu para separar os contextos */
-        .menu-label { font-size: 9px; color: #9aa0a6; text-align: center; margin-bottom: 5px; letter-spacing: 1px; }
 
         .mouse-blocker { position: absolute; bottom: 0; left: 0; width: 100%; height: 55px; z-index: 100; background: transparent; }
     </style>
@@ -70,64 +70,64 @@
     <div class="main-content">
         <div class="mouse-blocker"></div>
 
-        <iframe id="dash_rio_bonito_full" class="active" src="https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF"></iframe>
-        <iframe id="dash_rio_bonito_lite" class="background" src="URL_DA_OUTRA_PAGINA_RIO_BONITO"></iframe>
+        <iframe id="rio_meta" class="active" src="https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF"></iframe>
+        <iframe id="rio_google" class="background" src="https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/p_4gxmokec1d"></iframe>
+        <iframe id="rio_ga4" class="background" src="URL_EMBED_GA4_RIO"></iframe>
 
-        <iframe id="dash_unidade2_full" class="background" src="https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/p_78o1c57c1d"></iframe>
-        <iframe id="dash_unidade2_extra" class="background" src="URL_OUTRA_PAGINA_UNIDADE_2"></iframe>
+        <iframe id="itambe_meta" class="background" src="https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/p_78o1c57c1d"></iframe>
+        <iframe id="itambe_google" class="background" src="https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/p_xqrv5h8c1d"></iframe>
+        <iframe id="itambe_ga4" class="background" src="URL_EMBED_GA4_ITAMBE"></iframe>
+    </div>
 
-        <div id="ui-menu" class="floating-menu">
-            
-            <div id="group_rio_bonito" class="menu-group active-group">
-                <p class="menu-label">RIO BONITO</p>
-                <button class="btn-tab active-tab" onclick="changeDash('dash_rio_bonito_full', this)">Completo</button>
-                <button class="btn-tab" onclick="changeDash('dash_rio_bonito_lite', this)">Simplificado</button>
-                <button class="btn-tab" style="margin-top:10px; background:#f1f3f4" onclick="switchContext('group_unidade2', 'dash_unidade2_full')">Trocar Unidade</button>
-            </div>
-
-            <div id="group_unidade2" class="menu-group">
-                <p class="menu-label">UNIDADE 2</p>
-                <button class="btn-tab active-tab" onclick="changeDash('dash_unidade2_full', this)">Visão Geral</button>
-                <button class="btn-tab" onclick="changeDash('dash_unidade2_extra', this)">Detalhes</button>
-                <button class="btn-tab" style="margin-top:10px; background:#f1f3f4" onclick="switchContext('group_rio_bonito', 'dash_rio_bonito_full')">Voltar Rio Bonito</button>
-            </div>
-
+    <div id="ui-menu" class="floating-menu">
+        
+        <div id="menu_rio" class="menu-group active-group">
+            <p class="group-label">RIO BONITO</p>
+            <button class="btn-tab active-tab" onclick="changeDash('rio_meta', this)">Meta Ads</button>
+            <button class="btn-tab" onclick="changeDash('rio_google', this)">Google Ads</button>
+            <button class="btn-tab" onclick="changeDash('rio_ga4', this)">GA4</button>
+            <button class="btn-tab" style="margin-top:10px; background:#f1f3f4" onclick="switchUnit('menu_itambe', 'itambe_meta')">Ir p/ Itambé</button>
         </div>
+
+        <div id="menu_itambe" class="menu-group">
+            <p class="group-label">CIMENTO ITAMBÉ</p>
+            <button class="btn-tab active-tab" onclick="changeDash('itambe_meta', this)">Meta Ads</button>
+            <button class="btn-tab" onclick="changeDash('itambe_google', this)">Google Ads</button>
+            <button class="btn-tab" onclick="changeDash('itambe_ga4', this)">GA4</button>
+            <button class="btn-tab" style="margin-top:10px; background:#f1f3f4" onclick="switchUnit('menu_rio', 'rio_meta')">Voltar Rio Bonito</button>
+        </div>
+
     </div>
 
     <script>
         window.onload = function() {
-            setTimeout(() => { document.getElementById('ui-menu').style.opacity = '1'; }, 500);
+            setTimeout(() => { document.getElementById('ui-menu').style.opacity = '1'; }, 800);
         };
 
-        // Função para trocar de Dashboard dentro do mesmo grupo
-        function changeDash(targetId, btnElement) {
-            document.querySelectorAll('iframe').forEach(iframe => { iframe.classList.replace('active', 'background'); });
-            const target = document.getElementById(targetId);
-            if(target) target.classList.replace('background', 'active');
-
-            // Limpa botões apenas do grupo atual
-            btnElement.parentElement.querySelectorAll('.btn-tab').forEach(btn => { btn.classList.remove('active-tab'); });
-            btnElement.classList.add('active-tab');
+        // Troca de plataforma dentro da mesma unidade
+        function changeDash(id, btn) {
+            document.querySelectorAll('iframe').forEach(f => f.classList.replace('active', 'background'));
+            document.getElementById(id).classList.replace('background', 'active');
+            btn.parentElement.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active-tab'));
+            btn.classList.add('active-tab');
         }
 
-        // Função para trocar o CONTEXTO (Muda o Menu e o Dash Principal)
-        function switchContext(groupId, initialDashId) {
-            // 1. Troca o Menu Visível
-            document.querySelectorAll('.menu-group').forEach(group => { group.classList.remove('active-group'); });
-            document.getElementById(groupId).classList.add('active-group');
-
-            // 2. Troca o Dashboard
-            document.querySelectorAll('iframe').forEach(iframe => { iframe.classList.replace('active', 'background'); });
-            document.getElementById(initialDashId).classList.add('active');
+        // Troca de UNIDADE (Muda o menu lateral e o dash principal)
+        function switchUnit(menuId, dashId) {
+            document.querySelectorAll('.menu-group').forEach(m => m.classList.remove('active-group'));
+            document.getElementById(menuId).classList.add('active-group');
             
-            // 3. Reseta o destaque do botão no novo menu
-            document.querySelectorAll('.btn-tab').forEach(btn => { btn.classList.remove('active-tab'); });
-            document.getElementById(groupId).querySelector('.btn-tab').classList.add('active-tab');
+            document.querySelectorAll('iframe').forEach(f => f.classList.replace('active', 'background'));
+            document.getElementById(dashId).classList.replace('background', 'active');
+            
+            // Reseta botões do novo menu
+            document.getElementById(menuId).querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active-tab'));
+            document.getElementById(menuId).querySelector('.btn-tab').classList.add('active-tab');
         }
     </script>
 </body>
 </html>
+
 
 
 
