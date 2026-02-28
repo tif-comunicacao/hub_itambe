@@ -8,7 +8,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { height: 100%; width: 100%; overflow: hidden; background-color: #f5f5f5; font-family: 'Segoe UI', Arial, sans-serif; display: flex; flex-direction: column; }
 
-        /* CABEÇALHO HTML */
+        /* CABEÇALHO IDENTICO AO LOOKER */
         .header-tif {
             height: 70px; background-color: #004a20; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; z-index: 10000;
         }
@@ -28,12 +28,13 @@
         .main-container { flex-grow: 1; display: flex; position: relative; }
         .dash-area { flex-grow: 1; position: relative; overflow: hidden; }
         iframe {
-            position: absolute; top: -65px; left: -2px; width: calc(100% + 4px); height: calc(100% + 120px); border: none; transition: opacity 0.3s;
+            position: absolute; top: -65px; /* Esconde topo original */
+            left: -2px; width: calc(100% + 4px); height: calc(100% + 120px); border: none; transition: opacity 0.3s;
         }
 
-        /* MENU LATERAL DINÂMICO */
+        /* MENU LATERAL DINÂMICO (NO LOCAL DO X) */
         .platform-menu {
-            position: fixed; right: 50px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 10px; z-index: 9999;
+            position: fixed; right: 60px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 10px; z-index: 9999;
         }
         .menu-group { display: none; flex-direction: column; gap: 8px; }
         .menu-group.active-group { display: flex; }
@@ -56,10 +57,10 @@
             <div id="current-unit-label" class="unit-display">RIO BONITO</div>
         </div>
         <nav class="nav-units">
-            <button class="btn-unit active-unit" onclick="switchFullContext('RIO BONITO', 'rio', 'url_meta_rio', this)">Rio Bonito</button>
-            <button class="btn-unit" onclick="switchFullContext('CIMENTO ITAMBÉ', 'itambe', 'url_meta_itambe', this)">Cimento Itambé</button>
-            <button class="btn-unit" onclick="switchFullContext('CONCREBRAS', 'concrebras', 'url_meta_concre', this)">Concrebras</button>
-            <button class="btn-unit" onclick="switchFullContext('ENERGÉTICA', 'energetica', 'url_meta_ener', this)">Energética</button>
+            <button class="btn-unit active-unit" onclick="switchFullContext('RIO BONITO', 'rio', 'https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF', this)">Rio Bonito</button>
+            <button class="btn-unit" onclick="switchFullContext('CIMENTO ITAMBÉ', 'itambe', 'LINK_META_ITAMBE', this)">Cimento Itambé</button>
+            <button class="btn-unit" onclick="switchFullContext('CONCREBRAS', 'concrebras', 'LINK_META_CONCREBRAS', this)">Concrebras</button>
+            <button class="btn-unit" onclick="switchFullContext('ENERGÉTICA', 'energetica', 'LINK_META_ENERGETICA', this)">Energética</button>
         </nav>
     </header>
 
@@ -71,37 +72,56 @@
 
         <div class="platform-menu">
             <div id="menu-rio" class="menu-group active-group">
-                <button class="btn-plat active-plat" onclick="changeIframe('url_meta_rio', this)">Meta Ads</button>
-                <button class="btn-plat" onclick="changeIframe('url_google_rio', this)">Google Ads</button>
-                <button class="btn-plat" onclick="changeIframe('url_ga4_rio', this)">Analytics</button>
+                <button class="btn-plat active-plat" onclick="changeIframe('https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF', this)">Meta Ads</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_GOOGLE_RIO', this)">Google Ads</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_LINKEDIN_RIO', this)">LinkedIn</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_SEARCH_RIO', this)">Search</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_GA4_RIO', this)">GA4</button>
             </div>
+
             <div id="menu-itambe" class="menu-group">
-                <button class="btn-plat active-plat" onclick="changeIframe('url_meta_itambe', this)">Meta Ads</button>
-                <button class="btn-plat" onclick="changeIframe('url_google_itambe', this)">Google Ads</button>
-                <button class="btn-plat" onclick="changeIframe('url_ga4_itambe', this)">Analytics</button>
+                <button class="btn-plat active-plat" onclick="changeIframe('LINK_META_ITAMBE', this)">Meta Ads</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_GOOGLE_ITAMBE', this)">Google Ads</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_LINKEDIN_ITAMBE', this)">LinkedIn</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_SEARCH_ITAMBE', this)">Search</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_GA4_ITAMBE', this)">GA4</button>
             </div>
+
+            <div id="menu-concrebras" class="menu-group">
+                <button class="btn-plat active-plat" onclick="changeIframe('LINK_META_CONCRE', this)">Meta Ads</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_GOOGLE_CONCRE', this)">Google Ads</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_LINKEDIN_CONCRE', this)">LinkedIn</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_SEARCH_CONCRE', this)">Search</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_GA4_CONCRE', this)">GA4</button>
             </div>
+
+            <div id="menu-energetica" class="menu-group">
+                <button class="btn-plat active-plat" onclick="changeIframe('LINK_META_ENER', this)">Meta Ads</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_GOOGLE_ENER', this)">Google Ads</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_LINKEDIN_ENER', this)">LinkedIn</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_SEARCH_ENER', this)">Search</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_GA4_ENER', this)">GA4</button>
+            </div>
+        </div>
     </div>
 
     <script>
         const iframe = document.getElementById('main-iframe');
 
-        // 1. Troca a EMPRESA (Unidade)
         function switchFullContext(unitName, menuKey, initialUrl, btn) {
-            // Atualiza Label e Botões de Unidade
             document.getElementById('current-unit-label').innerText = unitName;
             document.querySelectorAll('.btn-unit').forEach(b => b.classList.remove('active-unit'));
             btn.classList.add('active-unit');
 
-            // Troca o Menu Lateral
             document.querySelectorAll('.menu-group').forEach(g => g.classList.remove('active-group'));
-            document.getElementById('menu-' + menuKey).classList.add('active-group');
+            const activeGroup = document.getElementById('menu-' + menuKey);
+            activeGroup.classList.add('active-group');
 
-            // Carrega o primeiro dash daquela empresa
-            changeIframe(initialUrl, document.getElementById('menu-' + menuKey).querySelector('.btn-plat'));
+            // Reseta para o primeiro botão (Meta) da nova empresa
+            const firstPlatBtn = activeGroup.querySelector('.btn-plat');
+            changeIframe(initialUrl, firstPlatBtn);
         }
 
-        // 2. Troca apenas a PLATAFORMA
         function changeIframe(url, btn) {
             iframe.style.opacity = '0';
             setTimeout(() => {
@@ -109,13 +129,13 @@
                 iframe.style.opacity = '1';
             }, 300);
 
-            // Estilo do botão lateral
             btn.parentElement.querySelectorAll('.btn-plat').forEach(b => b.classList.remove('active-plat'));
             btn.classList.add('active-plat');
         }
     </script>
 </body>
 </html>
+
 
 
 
