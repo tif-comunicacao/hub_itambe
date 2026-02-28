@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Tif - Grupo Itambé</title>
+    <title>Dashboard Tif - Performance Itambé</title>
     <style>
-        /* Reset de Estilos */
+        /* Reset e Base */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body, html { 
@@ -13,24 +13,32 @@
             width: 100%; 
             overflow: hidden; 
             background-color: #004a20; /* Verde Itambé */
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
         }
 
         /* Menu Lateral (Sidebar) */
         .sidebar {
-            width: 220px;
+            width: 240px;
             height: 100%;
-            background-color: #003316; /* Verde mais escuro para o menu */
+            background-color: #003316;
             display: flex;
             flex-direction: column;
-            padding: 30px 15px;
+            padding: 40px 20px;
             gap: 15px;
             z-index: 1000;
             border-right: 2px solid #2ecc71;
-            /* Inicia escondido para o delay */
+            /* Delay Visual */
             opacity: 0;
-            transition: opacity 1s ease-in;
+            transition: opacity 1.5s ease-in;
+        }
+
+        .sidebar h2 {
+            color: #2ecc71;
+            font-size: 12px;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            text-align: center;
         }
 
         /* Área do Dashboard */
@@ -38,6 +46,7 @@
             flex-grow: 1;
             position: relative;
             overflow: hidden;
+            background-color: #f5f5f5;
         }
 
         iframe {
@@ -45,49 +54,49 @@
             top: -2px; 
             left: -2px;
             width: calc(100% + 4px);
-            height: calc(100% + 45px); /* Esconde rodapé do Looker */
+            height: calc(100% + 48px); /* Esconde o rodapé dinâmico */
             border: none;
-            transition: opacity 0.3s ease-in-out;
+            transition: opacity 0.4s ease-in-out;
         }
 
         .active { z-index: 10; opacity: 1; }
         .background { z-index: 1; opacity: 0; pointer-events: none; }
 
-        /* Botões Laterais - Estilo do print enviado */
+        /* Botões Laterais - Estilo Rio Bonito/Itambé */
         .btn-nav {
-            padding: 15px;
-            background-color: #000000; /* Botão preto arredondado */
+            padding: 16px;
+            background-color: #000000;
             color: #ffffff;
             border: 1px solid #2ecc71;
             border-radius: 12px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 11px;
             font-weight: bold;
             text-align: left;
             text-transform: uppercase;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-nav:hover {
             background-color: #2ecc71;
             color: #004a20;
-            transform: translateX(5px);
+            transform: translateX(8px);
         }
 
         .btn-nav.active-btn {
             background-color: #2ecc71;
             color: #004a20;
-            border-left: 5px solid #ffffff;
+            border-left: 6px solid #ffffff;
         }
 
-        /* Zona morta para bloquear o rodapé flutuante */
+        /* Bloqueador de Mouse (Fundo do Dash) */
         .mouse-blocker {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 50px;
+            height: 55px;
             z-index: 100;
             background: transparent;
         }
@@ -96,12 +105,12 @@
 <body>
 
     <div id="sidebarMenu" class="sidebar">
-        <h2 style="color: #2ecc71; font-size: 14px; margin-bottom: 20px; text-align: center;">RELATÓRIOS</h2>
+        <h2>PLATAFORMAS</h2>
         <button class="btn-nav active-btn" onclick="changeDash('dashMeta', this)">Meta Ads</button>
         <button class="btn-nav" onclick="changeDash('dashGoogle', this)">Google Ads</button>
         <button class="btn-nav" onclick="changeDash('dashLinkedin', this)">LinkedIn</button>
-        <button class="btn-nav" onclick="changeDash('dashSearch', this)">Search</button>
-        <button class="btn-nav" onclick="changeDash('dashGA4', this)">GA4</button>
+        <button class="btn-nav" onclick="changeDash('dashSearch', this)">Google Search</button>
+        <button class="btn-nav" onclick="changeDash('dashGA4', this)">Analytics GA4</button>
     </div>
 
     <div class="main-content">
@@ -109,39 +118,40 @@
 
         <iframe id="dashMeta" class="active" src="https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF?navBar=hidden"></iframe>
         
-        <iframe id="dashGoogle" class="background" src="URL_GOOGLE_ADS_AQUI?navBar=hidden"></iframe>
-        <iframe id="dashLinkedin" class="background" src="URL_LINKEDIN_AQUI?navBar=hidden"></iframe>
-        <iframe id="dashSearch" class="background" src="URL_SEARCH_AQUI?navBar=hidden"></iframe>
-        <iframe id="dashGA4" class="background" src="URL_GA4_AQUI?navBar=hidden"></iframe>
+        <iframe id="dashGoogle" class="background" src="SOBRE_A_URL_DO_GOOGLE_ADS?navBar=hidden"></iframe>
+        <iframe id="dashLinkedin" class="background" src="SOBRE_A_URL_DO_LINKEDIN?navBar=hidden"></iframe>
+        <iframe id="dashSearch" class="background" src="SOBRE_A_URL_DO_SEARCH?navBar=hidden"></iframe>
+        <iframe id="dashGA4" class="background" src="SOBRE_A_URL_DO_GA4?navBar=hidden"></iframe>
     </div>
 
     <script>
-        // Delay para o menu aparecer após carregar o dash inicial
+        // Sincronização: Menu aparece após 4 segundos (tempo médio de renderização do Looker)
         setTimeout(() => {
             document.getElementById('sidebarMenu').style.opacity = '1';
-        }, 3000); // 3 segundos de espera
+        }, 4000);
 
         function changeDash(targetId, btnElement) {
-            // Esconde todos os iframes
-            document.querySelectorAll('iframe').forEach(iframe => {
+            const allIframes = document.querySelectorAll('iframe');
+            const allButtons = document.querySelectorAll('.btn-nav');
+
+            // Troca de Visibilidade (Efeito Instantâneo)
+            allIframes.forEach(iframe => {
                 iframe.classList.replace('active', 'background');
             });
 
-            // Mostra o selecionado
             const target = document.getElementById(targetId);
             if(target) {
                 target.classList.replace('background', 'active');
             }
 
-            // Atualiza estilo dos botões
-            document.querySelectorAll('.btn-nav').forEach(btn => {
-                btn.classList.remove('active-btn');
-            });
+            // Atualiza Destaque do Botão
+            allButtons.forEach(btn => btn.classList.remove('active-btn'));
             btnElement.classList.add('active-btn');
         }
     </script>
 </body>
 </html>
+
 
 
 
