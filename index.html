@@ -11,15 +11,15 @@
             height: 100%; 
             width: 100%; 
             overflow: hidden; 
-            background-color: #f5f5f5; /* Cor de fundo padrão do Looker */
+            background-color: #f5f5f5; /* Fundo cinza claro igual ao Looker */
             font-family: 'Segoe UI', Arial, sans-serif;
-            display: flex;
         }
 
-        /* Container Principal */
+        /* Container do Dash */
         .main-content {
-            flex-grow: 1;
             position: relative;
+            width: 100vw;
+            height: 100vh;
             overflow: hidden;
         }
 
@@ -28,7 +28,7 @@
             top: -2px; 
             left: -2px;
             width: calc(100% + 4px);
-            height: calc(100% + 50px); /* Esconde rodapé do Looker */
+            height: calc(100% + 50px);
             border: none;
             transition: opacity 0.3s ease-in-out;
         }
@@ -36,58 +36,50 @@
         .active { z-index: 10; opacity: 1; }
         .background { z-index: 1; opacity: 0; pointer-events: none; }
 
-        /* Menu Lateral Direito (Suave) */
-        .sidebar-right {
-            width: 180px;
-            height: 100%;
-            background-color: #ffffff;
-            border-left: 1px solid #e0e0e0;
+        /* Menu Flutuante na Direita (Onde estava o X) */
+        .floating-menu {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
             display: flex;
             flex-direction: column;
-            padding: 40px 15px;
-            gap: 12px;
-            z-index: 1000;
+            gap: 10px;
+            z-index: 9999;
         }
 
-        .sidebar-right h2 {
-            font-size: 11px;
-            color: #757575;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        /* Botões Estilo "Card" Suave */
-        .btn-nav {
-            padding: 12px 15px;
+        /* Botão Suave Estilo Tab */
+        .btn-tab {
+            width: 130px;
+            padding: 10px 12px;
             background-color: #ffffff;
-            color: #424242;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
+            color: #5f6368;
+            border: 1px solid #dadce0;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 12px;
-            font-weight: 500;
-            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            text-align: center;
+            text-transform: uppercase;
+            box-shadow: 0 1px 3px rgba(60,64,67,0.1);
             transition: all 0.2s ease;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
-        .btn-nav:hover {
+        .btn-tab:hover {
             background-color: #f8f9fa;
-            border-color: #bdbdbd;
-            transform: translateX(-3px);
+            border-color: #2e7d32;
+            color: #2e7d32;
         }
 
-        /* Estilo para o Botão Ativo - Usando o Verde do Grupo Itambé de forma sutil */
-        .btn-nav.active-btn {
+        /* Estilo para a aba ativa (Verde Itambé Suave) */
+        .btn-tab.active-tab {
             background-color: #e8f5e9;
             color: #2e7d32;
-            border-color: #2e7d32;
-            font-weight: 600;
+            border: 1px solid #2e7d32;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
 
-        /* Bloqueador de Mouse (Fundo) */
+        /* Bloqueio do rodapé */
         .mouse-blocker {
             position: absolute;
             bottom: 0;
@@ -105,42 +97,39 @@
         <div class="mouse-blocker"></div>
 
         <iframe id="dashMeta" class="active" src="https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF"></iframe>
-        
-        <iframe id="dashGoogle" class="background" src="URL_AQUI"></iframe>
-        <iframe id="dashLinkedin" class="background" src="URL_AQUI"></iframe>
-        <iframe id="dashSearch" class="background" src="URL_AQUI"></iframe>
-        <iframe id="dashGA4" class="background" src="URL_AQUI"></iframe>
-    </div>
+        <iframe id="dashGoogle" class="background" src="URL_GOOGLE_ADS"></iframe>
+        <iframe id="dashLinkedin" class="background" src="URL_LINKEDIN"></iframe>
+        <iframe id="dashSearch" class="background" src="URL_SEARCH"></iframe>
+        <iframe id="dashGA4" class="background" src="URL_GA4"></iframe>
 
-    <div class="sidebar-right">
-        <h2>Plataformas</h2>
-        <button class="btn-nav active-btn" onclick="changeDash('dashMeta', this)">Meta Ads</button>
-        <button class="btn-nav" onclick="changeDash('dashGoogle', this)">Google Ads</button>
-        <button class="btn-nav" onclick="changeDash('dashLinkedin', this)">LinkedIn</button>
-        <button class="btn-nav" onclick="changeDash('dashSearch', this)">Google Search</button>
-        <button class="btn-nav" onclick="changeDash('dashGA4', this)">Analytics GA4</button>
+        <div class="floating-menu">
+            <button class="btn-tab active-tab" onclick="changeDash('dashMeta', this)">Meta Ads</button>
+            <button class="btn-tab" onclick="changeDash('dashGoogle', this)">Google Ads</button>
+            <button class="btn-tab" onclick="changeDash('dashLinkedin', this)">LinkedIn</button>
+            <button class="btn-tab" onclick="changeDash('dashSearch', this)">Search</button>
+            <button class="btn-tab" onclick="changeDash('dashGA4', this)">Analytics</button>
+        </div>
     </div>
 
     <script>
         function changeDash(targetId, btnElement) {
-            const allIframes = document.querySelectorAll('iframe');
-            const allButtons = document.querySelectorAll('.btn-nav');
-
-            allIframes.forEach(iframe => {
+            // Troca de Dashboard
+            document.querySelectorAll('iframe').forEach(iframe => {
                 iframe.classList.replace('active', 'background');
             });
-
             const target = document.getElementById(targetId);
-            if(target) {
-                target.classList.replace('background', 'active');
-            }
+            if(target) target.classList.replace('background', 'active');
 
-            allButtons.forEach(btn => btn.classList.remove('active-btn'));
-            btnElement.classList.add('active-btn');
+            // Troca de Estilo do Botão
+            document.querySelectorAll('.btn-tab').forEach(btn => {
+                btn.classList.remove('active-tab');
+            });
+            btnElement.classList.add('active-tab');
         }
     </script>
 </body>
 </html>
+
 
 
 
