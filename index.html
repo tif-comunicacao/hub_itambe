@@ -3,72 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Tif - Itambé</title>
+    <title>Dashboard Performance - Grupo Itambé</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { height: 100%; width: 100%; overflow: hidden; background-color: #004a20; display: flex; font-family: sans-serif; }
-
-        /* Menu Lateral */
-        .sidebar {
-            width: 200px;
-            background-color: #003316;
-            display: flex;
-            flex-direction: column;
-            padding: 20px 10px;
-            gap: 10px;
-            border-right: 2px solid #2ecc71;
-            z-index: 1000;
-        }
-
-        .btn-nav {
-            padding: 12px;
-            background-color: #000;
-            color: #fff;
-            border: 1px solid #2ecc71;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: bold;
-            text-transform: uppercase;
-            transition: 0.2s;
-        }
-
-        .btn-nav:hover, .btn-nav.active-btn {
-            background-color: #2ecc71;
-            color: #004a20;
-        }
-
-        /* Área do Dash */
-        .main-content { flex-grow: 1; position: relative; overflow: hidden; }
         
+        body, html { 
+            height: 100%; 
+            width: 100%; 
+            overflow: hidden; 
+            background-color: #004a20; /* Verde Itambé */
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .dash-viewport {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
         iframe {
             position: absolute;
-            top: -2px; left: -2px;
+            top: -2px; 
+            left: -2px;
             width: calc(100% + 4px);
-            height: calc(100% + 50px);
+            height: calc(100% + 48px); /* Esconde o rodapé flutuante */
             border: none;
-            transition: opacity 0.3s;
+            transition: opacity 0.3s ease-in-out;
         }
 
         .active { z-index: 10; opacity: 1; }
         .background { z-index: 1; opacity: 0; pointer-events: none; }
 
-        /* Bloqueio do rodapé */
-        .mouse-blocker { position: absolute; bottom: 0; left: 0; width: 100%; height: 50px; z-index: 100; background: transparent; }
+        /* Zona morta para bloquear o rodapé do Looker */
+        .mouse-blocker {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            z-index: 100;
+            background: transparent;
+        }
+
+        /* Container dos Botões Inferiores */
+        .nav-bar {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999999;
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Botão Preto com Borda Verde (Estilo Print) */
+        .btn-nav {
+            padding: 12px 20px;
+            background-color: #000000;
+            color: #ffffff;
+            border: 1px solid #2ecc71;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            transition: all 0.2s;
+        }
+
+        .btn-nav:hover {
+            background-color: #2ecc71;
+            color: #004a20;
+            transform: translateY(-3px);
+        }
+
+        .btn-nav.active-btn {
+            background-color: #2ecc71;
+            color: #004a20;
+            border: 1px solid #fff;
+        }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
-        <button class="btn-nav active-btn" onclick="changeDash('dashMeta', this)">Meta Ads</button>
-        <button class="btn-nav" onclick="changeDash('dashGoogle', this)">Google Ads</button>
-        <button class="btn-nav" onclick="changeDash('dashLinkedin', this)">LinkedIn</button>
-        <button class="btn-nav" onclick="changeDash('dashSearch', this)">Google Search</button>
-        <button class="btn-nav" onclick="changeDash('dashGA4', this)">GA4</button>
-    </div>
-
-    <div class="main-content">
+    <div class="dash-viewport">
         <div class="mouse-blocker"></div>
+
         <iframe id="dashMeta" class="active" src="https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF"></iframe>
         
         <iframe id="dashGoogle" class="background" src=""></iframe>
@@ -77,20 +98,36 @@
         <iframe id="dashGA4" class="background" src=""></iframe>
     </div>
 
+    <div class="nav-bar">
+        <button class="btn-nav active-btn" onclick="changeDash('dashMeta', this)">Meta Ads</button>
+        <button class="btn-nav" onclick="changeDash('dashGoogle', this)">Google Ads</button>
+        <button class="btn-nav" onclick="changeDash('dashLinkedin', this)">LinkedIn</button>
+        <button class="btn-nav" onclick="changeDash('dashSearch', this)">Google Search</button>
+        <button class="btn-nav" onclick="changeDash('dashGA4', this)">GA4</button>
+    </div>
+
     <script>
         function changeDash(targetId, btnElement) {
+            // Troca de visibilidade dos dashboards
             document.querySelectorAll('iframe').forEach(iframe => {
                 iframe.classList.replace('active', 'background');
             });
-            const target = document.getElementById(targetId);
-            if(target) target.classList.replace('background', 'active');
 
-            document.querySelectorAll('.btn-nav').forEach(btn => btn.classList.remove('active-btn'));
+            const target = document.getElementById(targetId);
+            if(target) {
+                target.classList.replace('background', 'active');
+            }
+
+            // Atualiza o estado visual dos botões
+            document.querySelectorAll('.btn-nav').forEach(btn => {
+                btn.classList.remove('active-btn');
+            });
             btnElement.classList.add('active-btn');
         }
     </script>
 </body>
 </html>
+
 
 
 
