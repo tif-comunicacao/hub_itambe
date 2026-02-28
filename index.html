@@ -3,42 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Tif - Performance Itambé</title>
+    <title>Dashboard Performance - Grupo Itambé</title>
     <style>
-        /* Reset e Base */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body, html { 
             height: 100%; 
             width: 100%; 
             overflow: hidden; 
-            background-color: #004a20; /* Verde Itambé */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #004a20; /* Verde escuro Itambé */
+            font-family: 'Segoe UI', sans-serif;
             display: flex;
         }
 
-        /* Menu Lateral (Sidebar) */
+        /* Menu Lateral Imediato */
         .sidebar {
-            width: 240px;
+            width: 220px;
             height: 100%;
             background-color: #003316;
             display: flex;
             flex-direction: column;
-            padding: 40px 20px;
-            gap: 15px;
+            padding: 30px 15px;
+            gap: 12px;
             z-index: 1000;
             border-right: 2px solid #2ecc71;
-            /* Delay Visual */
-            opacity: 0;
-            transition: opacity 1.5s ease-in;
         }
 
         .sidebar h2 {
             color: #2ecc71;
-            font-size: 12px;
-            letter-spacing: 2px;
-            margin-bottom: 25px;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
             text-align: center;
+            text-transform: uppercase;
         }
 
         /* Área do Dashboard */
@@ -46,7 +43,6 @@
             flex-grow: 1;
             position: relative;
             overflow: hidden;
-            background-color: #f5f5f5;
         }
 
         iframe {
@@ -54,49 +50,49 @@
             top: -2px; 
             left: -2px;
             width: calc(100% + 4px);
-            height: calc(100% + 48px); /* Esconde o rodapé dinâmico */
+            height: calc(100% + 48px); /* Esconde o rodapé flutuante */
             border: none;
-            transition: opacity 0.4s ease-in-out;
+            transition: opacity 0.2s ease-in-out;
         }
 
         .active { z-index: 10; opacity: 1; }
         .background { z-index: 1; opacity: 0; pointer-events: none; }
 
-        /* Botões Laterais - Estilo Rio Bonito/Itambé */
+        /* Botões Estilo Itambé (Preto com Borda Verde) */
         .btn-nav {
-            padding: 16px;
+            padding: 14px;
             background-color: #000000;
             color: #ffffff;
             border: 1px solid #2ecc71;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: bold;
             text-align: left;
             text-transform: uppercase;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
         .btn-nav:hover {
             background-color: #2ecc71;
             color: #004a20;
-            transform: translateX(8px);
+            transform: translateX(5px);
         }
 
         .btn-nav.active-btn {
             background-color: #2ecc71;
             color: #004a20;
-            border-left: 6px solid #ffffff;
+            border-left: 5px solid #ffffff;
         }
 
-        /* Bloqueador de Mouse (Fundo do Dash) */
+        /* Bloqueador de Mouse para esconder rodapé */
         .mouse-blocker {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 55px;
+            height: 50px;
             z-index: 100;
             background: transparent;
         }
@@ -104,8 +100,8 @@
 </head>
 <body>
 
-    <div id="sidebarMenu" class="sidebar">
-        <h2>PLATAFORMAS</h2>
+    <div class="sidebar">
+        <h2>Relatórios</h2>
         <button class="btn-nav active-btn" onclick="changeDash('dashMeta', this)">Meta Ads</button>
         <button class="btn-nav" onclick="changeDash('dashGoogle', this)">Google Ads</button>
         <button class="btn-nav" onclick="changeDash('dashLinkedin', this)">LinkedIn</button>
@@ -118,23 +114,17 @@
 
         <iframe id="dashMeta" class="active" src="https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF?navBar=hidden"></iframe>
         
-        <iframe id="dashGoogle" class="background" src="SOBRE_A_URL_DO_GOOGLE_ADS?navBar=hidden"></iframe>
-        <iframe id="dashLinkedin" class="background" src="SOBRE_A_URL_DO_LINKEDIN?navBar=hidden"></iframe>
-        <iframe id="dashSearch" class="background" src="SOBRE_A_URL_DO_SEARCH?navBar=hidden"></iframe>
-        <iframe id="dashGA4" class="background" src="SOBRE_A_URL_DO_GA4?navBar=hidden"></iframe>
+        <iframe id="dashGoogle" class="background" src="URL_EMBED_GOOGLE?navBar=hidden"></iframe>
+        <iframe id="dashLinkedin" class="background" src="URL_EMBED_LINKEDIN?navBar=hidden"></iframe>
+        <iframe id="dashSearch" class="background" src="URL_EMBED_SEARCH?navBar=hidden"></iframe>
+        <iframe id="dashGA4" class="background" src="URL_EMBED_GA4?navBar=hidden"></iframe>
     </div>
 
     <script>
-        // Sincronização: Menu aparece após 4 segundos (tempo médio de renderização do Looker)
-        setTimeout(() => {
-            document.getElementById('sidebarMenu').style.opacity = '1';
-        }, 4000);
-
         function changeDash(targetId, btnElement) {
             const allIframes = document.querySelectorAll('iframe');
             const allButtons = document.querySelectorAll('.btn-nav');
 
-            // Troca de Visibilidade (Efeito Instantâneo)
             allIframes.forEach(iframe => {
                 iframe.classList.replace('active', 'background');
             });
@@ -144,7 +134,6 @@
                 target.classList.replace('background', 'active');
             }
 
-            // Atualiza Destaque do Botão
             allButtons.forEach(btn => btn.classList.remove('active-btn'));
             btnElement.classList.add('active-btn');
         }
