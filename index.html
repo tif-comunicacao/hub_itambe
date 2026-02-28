@@ -5,20 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Tif - Grupo Itambé</title>
     <style>
+        /* Reset de Estilos */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body, html { 
             height: 100%; 
             width: 100%; 
             overflow: hidden; 
-            background-color: #004a20; /* Fundo verde escuro Itambé */
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #004a20; /* Verde Itambé */
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
         }
 
-        .dash-viewport {
+        /* Menu Lateral (Sidebar) */
+        .sidebar {
+            width: 220px;
+            height: 100%;
+            background-color: #003316; /* Verde mais escuro para o menu */
+            display: flex;
+            flex-direction: column;
+            padding: 30px 15px;
+            gap: 15px;
+            z-index: 1000;
+            border-right: 2px solid #2ecc71;
+            /* Inicia escondido para o delay */
+            opacity: 0;
+            transition: opacity 1s ease-in;
+        }
+
+        /* Área do Dashboard */
+        .main-content {
+            flex-grow: 1;
             position: relative;
-            width: 100vw;
-            height: 100vh;
             overflow: hidden;
         }
 
@@ -27,7 +45,7 @@
             top: -2px; 
             left: -2px;
             width: calc(100% + 4px);
-            height: calc(100% + 45px); /* Esconde o rodapé flutuante */
+            height: calc(100% + 45px); /* Esconde rodapé do Looker */
             border: none;
             transition: opacity 0.3s ease-in-out;
         }
@@ -35,7 +53,35 @@
         .active { z-index: 10; opacity: 1; }
         .background { z-index: 1; opacity: 0; pointer-events: none; }
 
-        /* Zona morta para bloquear o rodapé do Looker */
+        /* Botões Laterais - Estilo do print enviado */
+        .btn-nav {
+            padding: 15px;
+            background-color: #000000; /* Botão preto arredondado */
+            color: #ffffff;
+            border: 1px solid #2ecc71;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            text-align: left;
+            text-transform: uppercase;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+
+        .btn-nav:hover {
+            background-color: #2ecc71;
+            color: #004a20;
+            transform: translateX(5px);
+        }
+
+        .btn-nav.active-btn {
+            background-color: #2ecc71;
+            color: #004a20;
+            border-left: 5px solid #ffffff;
+        }
+
+        /* Zona morta para bloquear o rodapé flutuante */
         .mouse-blocker {
             position: absolute;
             bottom: 0;
@@ -45,73 +91,35 @@
             z-index: 100;
             background: transparent;
         }
-
-        /* Container dos Botões */
-        .nav-bar {
-            position: fixed;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 999999;
-            display: flex;
-            gap: 12px;
-            /* Inicia escondido */
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 1s ease-in;
-        }
-
-        .btn-nav {
-            padding: 10px 18px;
-            background-color: #000; /* Preto como no seu print anterior */
-            color: #fff;
-            border: 1px solid #2ecc71; /* Borda verde vibrante */
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: all 0.2s;
-        }
-
-        .btn-nav:hover {
-            background-color: #2ecc71;
-            color: #004a20;
-            transform: translateY(-3px);
-        }
-
-        .btn-nav.active-btn {
-            background-color: #2ecc71;
-            color: #004a20;
-            border-color: #fff;
-        }
     </style>
 </head>
 <body>
 
-    <div class="dash-viewport">
-        <div class="mouse-blocker"></div>
-
-        <iframe id="dashMeta" class="active" src="URL_META_ADS?navBar=hidden"></iframe>
-        <iframe id="dashGoogle" class="background" src="URL_GOOGLE_ADS?navBar=hidden"></iframe>
-        </div>
-
-    <div id="navBar" class="nav-bar">
+    <div id="sidebarMenu" class="sidebar">
+        <h2 style="color: #2ecc71; font-size: 14px; margin-bottom: 20px; text-align: center;">RELATÓRIOS</h2>
         <button class="btn-nav active-btn" onclick="changeDash('dashMeta', this)">Meta Ads</button>
         <button class="btn-nav" onclick="changeDash('dashGoogle', this)">Google Ads</button>
         <button class="btn-nav" onclick="changeDash('dashLinkedin', this)">LinkedIn</button>
-        <button class="btn-nav" onclick="changeDash('dashSearch', this)">Google Search</button>
+        <button class="btn-nav" onclick="changeDash('dashSearch', this)">Search</button>
         <button class="btn-nav" onclick="changeDash('dashGA4', this)">GA4</button>
     </div>
 
+    <div class="main-content">
+        <div class="mouse-blocker"></div>
+
+        <iframe id="dashMeta" class="active" src="https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF?navBar=hidden"></iframe>
+        
+        <iframe id="dashGoogle" class="background" src="URL_GOOGLE_ADS_AQUI?navBar=hidden"></iframe>
+        <iframe id="dashLinkedin" class="background" src="URL_LINKEDIN_AQUI?navBar=hidden"></iframe>
+        <iframe id="dashSearch" class="background" src="URL_SEARCH_AQUI?navBar=hidden"></iframe>
+        <iframe id="dashGA4" class="background" src="URL_GA4_AQUI?navBar=hidden"></iframe>
+    </div>
+
     <script>
-        // Exibe os botões após 5 segundos
+        // Delay para o menu aparecer após carregar o dash inicial
         setTimeout(() => {
-            const nav = document.getElementById('navBar');
-            nav.style.visibility = 'visible';
-            nav.style.opacity = '1';
-        }, 5000);
+            document.getElementById('sidebarMenu').style.opacity = '1';
+        }, 3000); // 3 segundos de espera
 
         function changeDash(targetId, btnElement) {
             // Esconde todos os iframes
