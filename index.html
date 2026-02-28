@@ -11,11 +11,10 @@
             height: 100%; 
             width: 100%; 
             overflow: hidden; 
-            background-color: #f5f5f5; /* Fundo cinza claro igual ao Looker */
+            background-color: #f5f5f5; 
             font-family: 'Segoe UI', Arial, sans-serif;
         }
 
-        /* Container do Dash */
         .main-content {
             position: relative;
             width: 100vw;
@@ -36,50 +35,48 @@
         .active { z-index: 10; opacity: 1; }
         .background { z-index: 1; opacity: 0; pointer-events: none; }
 
-        /* Menu Flutuante na Direita (Onde estava o X) */
+        /* MENU FLUTUANTE AJUSTADO */
         .floating-menu {
             position: fixed;
-            right: 20px;
+            right: 60px; /* Aumentei aqui para afastar da borda direita conforme seu pedido */
             top: 50%;
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             z-index: 9999;
         }
 
-        /* Botão Suave Estilo Tab */
+        /* Estilo Suave e Discreto */
         .btn-tab {
-            width: 130px;
-            padding: 10px 12px;
+            width: 120px;
+            padding: 10px;
             background-color: #ffffff;
             color: #5f6368;
             border: 1px solid #dadce0;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
             text-align: center;
             text-transform: uppercase;
-            box-shadow: 0 1px 3px rgba(60,64,67,0.1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             transition: all 0.2s ease;
         }
 
         .btn-tab:hover {
-            background-color: #f8f9fa;
             border-color: #2e7d32;
             color: #2e7d32;
+            background-color: #f8f9fa;
         }
 
-        /* Estilo para a aba ativa (Verde Itambé Suave) */
         .btn-tab.active-tab {
             background-color: #e8f5e9;
             color: #2e7d32;
             border: 1px solid #2e7d32;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
 
-        /* Bloqueio do rodapé */
+        /* Bloqueio do Rodapé do Looker */
         .mouse-blocker {
             position: absolute;
             bottom: 0;
@@ -97,10 +94,11 @@
         <div class="mouse-blocker"></div>
 
         <iframe id="dashMeta" class="active" src="https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF"></iframe>
-        <iframe id="dashGoogle" class="background" src="URL_GOOGLE_ADS"></iframe>
-        <iframe id="dashLinkedin" class="background" src="URL_LINKEDIN"></iframe>
-        <iframe id="dashSearch" class="background" src="URL_SEARCH"></iframe>
-        <iframe id="dashGA4" class="background" src="URL_GA4"></iframe>
+        
+        <iframe id="dashGoogle" class="background" src=""></iframe>
+        <iframe id="dashLinkedin" class="background" src=""></iframe>
+        <iframe id="dashSearch" class="background" src=""></iframe>
+        <iframe id="dashGA4" class="background" src=""></iframe>
 
         <div class="floating-menu">
             <button class="btn-tab active-tab" onclick="changeDash('dashMeta', this)">Meta Ads</button>
@@ -129,6 +127,7 @@
     </script>
 </body>
 </html>
+
 
 
 
