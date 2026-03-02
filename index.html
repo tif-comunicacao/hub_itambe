@@ -14,7 +14,7 @@
             display: flex; flex-direction: column; 
         }
 
-        /* CABEÇALHO ESTILIZADO */
+        /* CABEÇALHO ESTILIZADO (Z-INDEX ALTO PARA CLIQUE FUNCIONAR) */
         .header-tif {
             background-color: #004a2f; 
             height: 70px;
@@ -22,8 +22,10 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 40px;
-            z-index: 10000;
+            z-index: 99999 !important;
+            position: relative;
             flex-shrink: 0;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
         }
         
         .brand-section { display: flex; align-items: center; gap: 16px; }
@@ -35,24 +37,34 @@
         .btn-unit {
             padding: 8px 16px; color: white; border-radius: 6px;
             cursor: pointer; font-size: 11px; font-weight: 700; text-transform: uppercase; transition: all 0.2s;
-            opacity: 0.6; white-space: nowrap;
+            opacity: 0.6; white-space: nowrap; border: none;
         }
-        .btn-unit.active-unit { background-color: rgba(255,255,255,0.2); opacity: 1; }
+        .btn-unit.active-unit { background-color: rgba(255,255,255,0.2); opacity: 1; border: 1px solid rgba(255,255,255,0.4); }
 
         /* DASHBOARD AREA */
         .main-container { flex-grow: 1; display: flex; position: relative; overflow: hidden; }
         .dash-area { flex-grow: 1; position: relative; overflow: hidden; }
         
         iframe {
-            position: absolute; top: -65px; 
-            left: -2px; width: calc(100% + 4px); height: calc(100% + 120px); border: none;
+            position: absolute; 
+            top: -65px; /* Esconde topo original do Looker */
+            left: -2px; 
+            width: calc(100% + 4px); 
+            height: calc(100% + 120px); 
+            border: none;
+            transition: opacity 0.4s ease-in-out;
         }
 
         /* MENU LATERAL COM ENTRADA LENTA */
         .platform-menu {
-            position: fixed; right: 60px; top: 50%; transform: translateY(-50%); 
-            display: flex; flex-direction: column; gap: 10px; z-index: 9999;
-            /* Inicia invisível */
+            position: fixed; 
+            right: 60px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+            z-index: 9999;
             opacity: 0; 
             visibility: hidden;
             transition: opacity 1.2s ease-in-out, visibility 1.2s;
@@ -64,9 +76,11 @@
             width: 140px; padding: 12px; background: white; border: 1px solid #e5e7eb; border-radius: 8px;
             cursor: pointer; font-size: 10px; font-weight: 700; text-transform: uppercase; 
             box-shadow: 0 1px 3px rgba(0,0,0,0.1); color: #374151; text-align: center;
+            transition: all 0.2s;
         }
         .btn-plat.active-plat { background: #ecfdf5; color: #065f46; border-color: #10b981; }
 
+        /* BLOQUEIO DE HOVER NO RODAPÉ */
         .mouse-blocker { position: absolute; bottom: 0; left: 0; width: 100%; height: 55px; z-index: 100; background: transparent; }
 
         /* RESPONSIVIDADE MOBILE */
@@ -80,6 +94,7 @@
             }
             .menu-group.active-group { flex-direction: row; }
             .btn-plat { width: auto; min-width: 110px; }
+            iframe { top: -50px; height: calc(100% + 100px); }
         }
     </style>
 </head>
@@ -94,8 +109,8 @@
         <nav class="nav-units">
             <button class="btn-unit active-unit" onclick="switchFullContext('Rio Bonito', 'rio', 'https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF', this)">RIO BONITO</button>
             <button class="btn-unit" onclick="switchFullContext('Cimento Itambé', 'itambe', 'https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/p_78o1c57c1d', this)">CIMENTO ITAMBÉ</button>
-            <button class="btn-unit" onclick="switchFullContext('Concrebras', 'concrebras', 'LINK_CONCRE_META', this)">CONCREBRAS</button>
-            <button class="btn-unit" onclick="switchFullContext('Energética', 'energetica', 'LINK_ENER_META', this)">ENERGÉTICA</button>
+            <button class="btn-unit" onclick="switchFullContext('Concrebras', 'concrebras', 'LINK_EMBED_CONCREBRAS', this)">CONCREBRAS</button>
+            <button class="btn-unit" onclick="switchFullContext('Energética', 'energetica', 'LINK_EMBED_ENERGETICA', this)">ENERGÉTICA</button>
         </nav>
     </header>
 
@@ -106,44 +121,81 @@
         </div>
 
         <div id="ui-menu" class="platform-menu">
+            
             <div id="menu-rio" class="menu-group active-group">
                 <button class="btn-plat active-plat" onclick="changeIframe('https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF', this)">Meta Ads</button>
                 <button class="btn-plat" onclick="changeIframe('LINK_RIO_GOOGLE', this)">Google Ads</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_RIO_LINKEDIN', this)">LinkedIn</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_RIO_SEARCH', this)">Search</button>
                 <button class="btn-plat" onclick="changeIframe('LINK_RIO_GA4', this)">GA4</button>
             </div>
+
+            <div id="menu-itambe" class="menu-group">
+                <button class="btn-plat active-plat" onclick="changeIframe('https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/p_78o1c57c1d', this)">Meta Ads</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_ITAMBE_GOOGLE', this)">Google Ads</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_ITAMBE_LINKEDIN', this)">LinkedIn</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_ITAMBE_GA4', this)">GA4</button>
             </div>
+
+            <div id="menu-concrebras" class="menu-group">
+                <button class="btn-plat active-plat" onclick="changeIframe('LINK_CONCRE_META', this)">Meta Ads</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_CONCRE_GOOGLE', this)">Google Ads</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_CONCRE_GA4', this)">GA4</button>
+            </div>
+
+            <div id="menu-energetica" class="menu-group">
+                <button class="btn-plat active-plat" onclick="changeIframe('LINK_ENER_META', this)">Meta Ads</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_ENER_GOOGLE', this)">Google Ads</button>
+                <button class="btn-plat" onclick="changeIframe('LINK_ENER_GA4', this)">GA4</button>
+            </div>
+
+        </div>
     </div>
 
     <script>
         const iframe = document.getElementById('main-iframe');
         const menu = document.getElementById('ui-menu');
 
-        // Controle de entrada lenta ao carregar a página
+        // Delay de 1.5s para o menu aparecer após o Dashboard
         window.onload = function() {
             setTimeout(() => {
                 menu.style.visibility = 'visible';
                 menu.style.opacity = '1';
-            }, 1500); // Aguarda 1.5s para o Dash carregar antes
+            }, 1500);
         };
 
+        // Função para trocar de Unidade (Header)
         function switchFullContext(unitName, menuKey, initialUrl, btn) {
+            // Atualiza Label superior
             document.getElementById('unit-label').innerText = unitName;
+            
+            // Estilo dos botões do topo
             document.querySelectorAll('.btn-unit').forEach(b => b.classList.remove('active-unit'));
             btn.classList.add('active-unit');
 
+            // Troca o Grupo de Botões Laterais
             document.querySelectorAll('.menu-group').forEach(g => g.classList.remove('active-group'));
             const activeGroup = document.getElementById('menu-' + menuKey);
             activeGroup.classList.add('active-group');
 
-            changeIframe(initialUrl, activeGroup.querySelector('.btn-plat'));
+            // Carrega a primeira plataforma da nova unidade
+            const firstPlatBtn = activeGroup.querySelector('.btn-plat');
+            changeIframe(initialUrl, firstPlatBtn);
         }
 
+        // Função para trocar de Plataforma (Lateral)
         function changeIframe(url, btn) {
             if (!url || url.includes('LINK_')) return;
-            iframe.style.opacity = '0.5';
-            iframe.src = url;
-            setTimeout(() => { iframe.style.opacity = '1'; }, 300);
 
+            // Transição suave no iframe
+            iframe.style.opacity = '0.3';
+            
+            setTimeout(() => {
+                iframe.src = url;
+                iframe.style.opacity = '1';
+            }, 300);
+
+            // Atualiza destaque do botão lateral
             btn.parentElement.querySelectorAll('.btn-plat').forEach(b => b.classList.remove('active-plat'));
             btn.classList.add('active-plat');
         }
