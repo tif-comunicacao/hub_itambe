@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hub de Performance - Grupo Itambé</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { 
@@ -14,21 +14,20 @@
             display: flex; flex-direction: column; 
         }
 
-        /* CABEÇALHO BASEADO NO SEU CÓDIGO */
+        /* CABEÇALHO ESTILIZADO */
         .header-tif {
-            background-color: #004a2f; /* Cor do seu código */
+            background-color: #004a2f; 
             height: 70px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 40px;
             z-index: 10000;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
             flex-shrink: 0;
         }
         
         .brand-section { display: flex; align-items: center; gap: 16px; }
-        .brand-logo { color: white; font-weight: 700; font-style: italic; font-size: 20px; tracking-tighter; }
+        .brand-logo { color: white; font-weight: 700; font-style: italic; font-size: 20px; letter-spacing: -0.05em; }
         .divider { width: 1px; height: 24px; background-color: rgba(255,255,255,0.3); }
         .unit-display { color: rgba(255,255,255,0.8); font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
 
@@ -38,22 +37,25 @@
             cursor: pointer; font-size: 11px; font-weight: 700; text-transform: uppercase; transition: all 0.2s;
             opacity: 0.6; white-space: nowrap;
         }
-        .btn-unit:hover { opacity: 0.8; background-color: rgba(255,255,255,0.1); }
         .btn-unit.active-unit { background-color: rgba(255,255,255,0.2); opacity: 1; }
 
-        /* ÁREA DO DASHBOARD */
+        /* DASHBOARD AREA */
         .main-container { flex-grow: 1; display: flex; position: relative; overflow: hidden; }
         .dash-area { flex-grow: 1; position: relative; overflow: hidden; }
         
         iframe {
-            position: absolute; top: -65px; /* Esconde topo original do Looker */
-            left: -2px; width: calc(100% + 4px); height: calc(100% + 120px); border: none; transition: opacity 0.3s;
+            position: absolute; top: -65px; 
+            left: -2px; width: calc(100% + 4px); height: calc(100% + 120px); border: none;
         }
 
-        /* MENU LATERAL DINÂMICO (POSIÇÃO DO X) */
+        /* MENU LATERAL COM ENTRADA LENTA */
         .platform-menu {
             position: fixed; right: 60px; top: 50%; transform: translateY(-50%); 
             display: flex; flex-direction: column; gap: 10px; z-index: 9999;
+            /* Inicia invisível */
+            opacity: 0; 
+            visibility: hidden;
+            transition: opacity 1.2s ease-in-out, visibility 1.2s;
         }
         .menu-group { display: none; flex-direction: column; gap: 8px; }
         .menu-group.active-group { display: flex; }
@@ -61,18 +63,15 @@
         .btn-plat {
             width: 140px; padding: 12px; background: white; border: 1px solid #e5e7eb; border-radius: 8px;
             cursor: pointer; font-size: 10px; font-weight: 700; text-transform: uppercase; 
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: all 0.2s;
-            color: #374151; text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); color: #374151; text-align: center;
         }
-        .btn-plat:hover { transform: translateY(-1px); border-color: #00843d; }
         .btn-plat.active-plat { background: #ecfdf5; color: #065f46; border-color: #10b981; }
 
         .mouse-blocker { position: absolute; bottom: 0; left: 0; width: 100%; height: 55px; z-index: 100; background: transparent; }
 
-        /* RESPONSIVIDADE */
+        /* RESPONSIVIDADE MOBILE */
         @media (max-width: 900px) {
             .header-tif { height: auto; flex-direction: column; padding: 15px; gap: 15px; }
-            .nav-units { flex-wrap: wrap; justify-content: center; width: 100%; }
             .platform-menu {
                 right: 0; bottom: 0; top: auto; transform: none; width: 100%;
                 flex-direction: row; background: white; padding: 10px;
@@ -80,8 +79,7 @@
                 overflow-x: auto;
             }
             .menu-group.active-group { flex-direction: row; }
-            .btn-plat { width: auto; min-width: 110px; white-space: nowrap; }
-            iframe { top: -50px; height: calc(100% + 100px); }
+            .btn-plat { width: auto; min-width: 110px; }
         }
     </style>
 </head>
@@ -94,10 +92,10 @@
             <div id="unit-label" class="unit-display">Rio Bonito</div>
         </div>
         <nav class="nav-units">
-            <button id="btn-rb" class="btn-unit active-unit" onclick="switchFullContext('Rio Bonito', 'rio', 'https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF', this)">RIO BONITO</button>
-            <button id="btn-itambe" class="btn-unit" onclick="switchFullContext('Cimento Itambé', 'itambe', 'https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/p_78o1c57c1d', this)">CIMENTO ITAMBÉ</button>
-            <button id="btn-concrebras" class="btn-unit" onclick="switchFullContext('Concrebras', 'concrebras', 'LINK_META_CONCRE', this)">CONCREBRAS</button>
-            <button id="btn-energetica" class="btn-unit" onclick="switchFullContext('Energética', 'energetica', 'LINK_META_ENER', this)">ENERGÉTICA</button>
+            <button class="btn-unit active-unit" onclick="switchFullContext('Rio Bonito', 'rio', 'https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF', this)">RIO BONITO</button>
+            <button class="btn-unit" onclick="switchFullContext('Cimento Itambé', 'itambe', 'https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/p_78o1c57c1d', this)">CIMENTO ITAMBÉ</button>
+            <button class="btn-unit" onclick="switchFullContext('Concrebras', 'concrebras', 'LINK_CONCRE_META', this)">CONCREBRAS</button>
+            <button class="btn-unit" onclick="switchFullContext('Energética', 'energetica', 'LINK_ENER_META', this)">ENERGÉTICA</button>
         </nav>
     </header>
 
@@ -107,38 +105,26 @@
             <iframe id="main-iframe" src="https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF"></iframe>
         </div>
 
-        <div class="platform-menu">
+        <div id="ui-menu" class="platform-menu">
             <div id="menu-rio" class="menu-group active-group">
                 <button class="btn-plat active-plat" onclick="changeIframe('https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF', this)">Meta Ads</button>
                 <button class="btn-plat" onclick="changeIframe('LINK_RIO_GOOGLE', this)">Google Ads</button>
-                <button class="btn-plat" onclick="changeIframe('LINK_RIO_LINKEDIN', this)">LinkedIn</button>
-                <button class="btn-plat" onclick="changeIframe('LINK_RIO_SEARCH', this)">Search</button>
                 <button class="btn-plat" onclick="changeIframe('LINK_RIO_GA4', this)">GA4</button>
             </div>
-
-            <div id="menu-itambe" class="menu-group">
-                <button class="btn-plat active-plat" onclick="changeIframe('https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/p_78o1c57c1d', this)">Meta Ads</button>
-                <button class="btn-plat" onclick="changeIframe('LINK_ITAMBE_GOOGLE', this)">Google Ads</button>
-                <button class="btn-plat" onclick="changeIframe('LINK_ITAMBE_LINKEDIN', this)">LinkedIn</button>
-                <button class="btn-plat" onclick="changeIframe('LINK_ITAMBE_GA4', this)">GA4</button>
             </div>
-
-            <div id="menu-concrebras" class="menu-group">
-                <button class="btn-plat active-plat" onclick="changeIframe('LINK_CONCRE_META', this)">Meta Ads</button>
-                <button class="btn-plat" onclick="changeIframe('LINK_CONCRE_GOOGLE', this)">Google Ads</button>
-                <button class="btn-plat" onclick="changeIframe('LINK_CONCRE_GA4', this)">GA4</button>
-            </div>
-
-            <div id="menu-energetica" class="menu-group">
-                <button class="btn-plat active-plat" onclick="changeIframe('LINK_ENER_META', this)">Meta Ads</button>
-                <button class="btn-plat" onclick="changeIframe('LINK_ENER_GOOGLE', this)">Google Ads</button>
-                <button class="btn-plat" onclick="changeIframe('LINK_ENER_GA4', this)">GA4</button>
-            </div>
-        </div>
     </div>
 
     <script>
         const iframe = document.getElementById('main-iframe');
+        const menu = document.getElementById('ui-menu');
+
+        // Controle de entrada lenta ao carregar a página
+        window.onload = function() {
+            setTimeout(() => {
+                menu.style.visibility = 'visible';
+                menu.style.opacity = '1';
+            }, 1500); // Aguarda 1.5s para o Dash carregar antes
+        };
 
         function switchFullContext(unitName, menuKey, initialUrl, btn) {
             document.getElementById('unit-label').innerText = unitName;
@@ -149,18 +135,14 @@
             const activeGroup = document.getElementById('menu-' + menuKey);
             activeGroup.classList.add('active-group');
 
-            const firstPlatBtn = activeGroup.querySelector('.btn-plat');
-            changeIframe(initialUrl, firstPlatBtn);
-            window.scrollTo({top: 0, behavior: 'smooth'});
+            changeIframe(initialUrl, activeGroup.querySelector('.btn-plat'));
         }
 
         function changeIframe(url, btn) {
             if (!url || url.includes('LINK_')) return;
-            iframe.style.opacity = '0';
-            setTimeout(() => {
-                iframe.src = url;
-                iframe.style.opacity = '1';
-            }, 300);
+            iframe.style.opacity = '0.5';
+            iframe.src = url;
+            setTimeout(() => { iframe.style.opacity = '1'; }, 300);
 
             btn.parentElement.querySelectorAll('.btn-plat').forEach(b => b.classList.remove('active-plat'));
             btn.classList.add('active-plat');
@@ -168,6 +150,3 @@
     </script>
 </body>
 </html>
-
-
-
