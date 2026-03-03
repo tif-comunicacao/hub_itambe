@@ -52,10 +52,10 @@
             width: calc(100% + 4px); 
             height: calc(100% + 120px); 
             border: none;
-            transition: opacity 0.4s ease-in-out;
+            transition: opacity 0.5s ease-in-out;
         }
 
-        /* MENU LATERAL COM TRANSIÇÃO SUAVE */
+        /* MENU LATERAL COM TRANSIÇÃO LENTA (3 SEGUNDOS) */
         .platform-menu {
             position: fixed; 
             right: 60px; 
@@ -67,7 +67,8 @@
             z-index: 9999;
             opacity: 0; 
             visibility: hidden;
-            transition: opacity 1.0s ease-in-out, visibility 1.0s;
+            /* Suavidade da transição de opacidade */
+            transition: opacity 1.5s ease-in-out, visibility 1.5s;
         }
         .menu-group { display: none; flex-direction: column; gap: 8px; }
         .menu-group.active-group { display: flex; }
@@ -151,22 +152,24 @@
                 <button class="btn-plat" onclick="changeIframe('https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/p_wcoobufg1d', this)">GA4</button>
             </div>
         </div>
+    </div>
 
     <script>
         const iframe = document.getElementById('main-iframe');
         const menu = document.getElementById('ui-menu');
 
-        // Carregamento inicial suave
+        // Carregamento inicial: menu aparece após 3 segundos
         window.onload = function() {
             setTimeout(() => {
                 menu.style.visibility = 'visible';
                 menu.style.opacity = '1';
-            }, 1500);
+            }, 3000);
         };
 
-        // Função para trocar de Unidade (Header) com Fade no Menu
+        // Função para trocar de Unidade (Header) com delay de 3 segundos no ressurgimento
         function switchFullContext(unitName, menuKey, initialUrl, btn) {
-            // 1. Inicia Fade-out do menu lateral
+            // 1. Inicia Fade-out imediato do menu lateral
+            menu.style.transition = "opacity 0.5s ease-in-out";
             menu.style.opacity = '0';
             
             setTimeout(() => {
@@ -175,27 +178,29 @@
                 document.querySelectorAll('.btn-unit').forEach(b => b.classList.remove('active-unit'));
                 btn.classList.add('active-unit');
 
-                // 3. Troca o Grupo de Botões Laterais
+                // 3. Troca o Grupo de Botões Laterais internamente
                 document.querySelectorAll('.menu-group').forEach(g => g.classList.remove('active-group'));
                 const activeGroup = document.getElementById('menu-' + menuKey);
                 activeGroup.classList.add('active-group');
 
-                // 4. Carrega a primeira plataforma da nova unidade
+                // 4. Carrega a primeira plataforma da nova unidade (Meta Ads)
                 const firstPlatBtn = activeGroup.querySelector('.btn-plat');
                 changeIframe(initialUrl, firstPlatBtn);
 
-                // 5. Fade-in suave do novo menu
+                // 5. Fade-in suave do novo menu APÓS 3 segundos de carregamento do Dash
                 setTimeout(() => {
+                    menu.style.transition = "opacity 1.5s ease-in-out";
                     menu.style.opacity = '1';
-                }, 300); 
+                }, 3000); 
 
-            }, 600); // Tempo do fade-out antes de trocar o conteúdo
+            }, 500); // Aguarda o fade-out inicial terminar para processar as trocas
         }
 
-        // Função para trocar de Plataforma (Lateral)
+        // Função para trocar apenas a plataforma (Botões Laterais)
         function changeIframe(url, btn) {
-            if (!url || url.includes('LINK_')) return;
+            if (!url) return;
 
+            // Escurece o iframe levemente durante a troca
             iframe.style.opacity = '0.3';
             
             setTimeout(() => {
@@ -211,7 +216,6 @@
     </script>
 </body>
 </html>
-
 
 
 
