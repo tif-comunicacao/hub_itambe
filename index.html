@@ -14,7 +14,7 @@
             display: flex; flex-direction: column; 
         }
 
-        /* CABEÇALHO ESTILIZADO (Z-INDEX ALTO PARA CLIQUE FUNCIONAR) */
+        /* CABEÇALHO ESTILIZADO */
         .header-tif {
             background-color: #004a2f; 
             height: 70px;
@@ -47,7 +47,7 @@
         
         iframe {
             position: absolute; 
-            top: -65px; /* Esconde topo original do Looker */
+            top: -65px; 
             left: -2px; 
             width: calc(100% + 4px); 
             height: calc(100% + 120px); 
@@ -55,7 +55,7 @@
             transition: opacity 0.4s ease-in-out;
         }
 
-        /* MENU LATERAL COM ENTRADA LENTA */
+        /* MENU LATERAL COM TRANSIÇÃO SUAVE */
         .platform-menu {
             position: fixed; 
             right: 60px; 
@@ -67,7 +67,7 @@
             z-index: 9999;
             opacity: 0; 
             visibility: hidden;
-            transition: opacity 1.2s ease-in-out, visibility 1.2s;
+            transition: opacity 1.0s ease-in-out, visibility 1.0s;
         }
         .menu-group { display: none; flex-direction: column; gap: 8px; }
         .menu-group.active-group { display: flex; }
@@ -80,10 +80,8 @@
         }
         .btn-plat.active-plat { background: #ecfdf5; color: #065f46; border-color: #10b981; }
 
-        /* BLOQUEIO DE HOVER NO RODAPÉ */
         .mouse-blocker { position: absolute; bottom: 0; left: 0; width: 100%; height: 55px; z-index: 100; background: transparent; }
 
-        /* RESPONSIVIDADE MOBILE */
         @media (max-width: 900px) {
             .header-tif { height: auto; flex-direction: column; padding: 15px; gap: 15px; }
             .platform-menu {
@@ -120,8 +118,7 @@
             <iframe id="main-iframe" src="https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF"></iframe>
         </div>
 
-<div id="ui-menu" class="platform-menu">
-            
+        <div id="ui-menu" class="platform-menu">
             <div id="menu-rio" class="menu-group active-group">
                 <button class="btn-plat active-plat" onclick="changeIframe('https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/TmTqF', this)">Meta Ads</button>
                 <button class="btn-plat" onclick="changeIframe('https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/p_4gxmokec1d', this)">Google Ads</button>
@@ -153,14 +150,13 @@
                 <button class="btn-plat" onclick="changeIframe('https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/p_pe8i9jvf1d', this)">Search</button>
                 <button class="btn-plat" onclick="changeIframe('https://lookerstudio.google.com/embed/reporting/e7231430-c472-4701-914a-96644445fe42/page/p_wcoobufg1d', this)">GA4</button>
             </div>
-
         </div>
 
     <script>
         const iframe = document.getElementById('main-iframe');
         const menu = document.getElementById('ui-menu');
 
-        // Delay de 1.5s para o menu aparecer após o Dashboard
+        // Carregamento inicial suave
         window.onload = function() {
             setTimeout(() => {
                 menu.style.visibility = 'visible';
@@ -168,30 +164,38 @@
             }, 1500);
         };
 
-        // Função para trocar de Unidade (Header)
+        // Função para trocar de Unidade (Header) com Fade no Menu
         function switchFullContext(unitName, menuKey, initialUrl, btn) {
-            // Atualiza Label superior
-            document.getElementById('unit-label').innerText = unitName;
+            // 1. Inicia Fade-out do menu lateral
+            menu.style.opacity = '0';
             
-            // Estilo dos botões do topo
-            document.querySelectorAll('.btn-unit').forEach(b => b.classList.remove('active-unit'));
-            btn.classList.add('active-unit');
+            setTimeout(() => {
+                // 2. Atualiza Label e botões do topo
+                document.getElementById('unit-label').innerText = unitName;
+                document.querySelectorAll('.btn-unit').forEach(b => b.classList.remove('active-unit'));
+                btn.classList.add('active-unit');
 
-            // Troca o Grupo de Botões Laterais
-            document.querySelectorAll('.menu-group').forEach(g => g.classList.remove('active-group'));
-            const activeGroup = document.getElementById('menu-' + menuKey);
-            activeGroup.classList.add('active-group');
+                // 3. Troca o Grupo de Botões Laterais
+                document.querySelectorAll('.menu-group').forEach(g => g.classList.remove('active-group'));
+                const activeGroup = document.getElementById('menu-' + menuKey);
+                activeGroup.classList.add('active-group');
 
-            // Carrega a primeira plataforma da nova unidade
-            const firstPlatBtn = activeGroup.querySelector('.btn-plat');
-            changeIframe(initialUrl, firstPlatBtn);
+                // 4. Carrega a primeira plataforma da nova unidade
+                const firstPlatBtn = activeGroup.querySelector('.btn-plat');
+                changeIframe(initialUrl, firstPlatBtn);
+
+                // 5. Fade-in suave do novo menu
+                setTimeout(() => {
+                    menu.style.opacity = '1';
+                }, 300); 
+
+            }, 600); // Tempo do fade-out antes de trocar o conteúdo
         }
 
         // Função para trocar de Plataforma (Lateral)
         function changeIframe(url, btn) {
             if (!url || url.includes('LINK_')) return;
 
-            // Transição suave no iframe
             iframe.style.opacity = '0.3';
             
             setTimeout(() => {
@@ -199,9 +203,10 @@
                 iframe.style.opacity = '1';
             }, 300);
 
-            // Atualiza destaque do botão lateral
-            btn.parentElement.querySelectorAll('.btn-plat').forEach(b => b.classList.remove('active-plat'));
-            btn.classList.add('active-plat');
+            if (btn) {
+                btn.parentElement.querySelectorAll('.btn-plat').forEach(b => b.classList.remove('active-plat'));
+                btn.classList.add('active-plat');
+            }
         }
     </script>
 </body>
