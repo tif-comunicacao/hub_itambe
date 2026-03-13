@@ -14,7 +14,7 @@
             display: flex; flex-direction: column; 
         }
 
-        /* CABEÇALHO ESTILIZADO */
+      
         .header-tif {
             background-color: #004a2f; 
             height: 70px;
@@ -158,7 +158,7 @@
         const iframe = document.getElementById('main-iframe');
         const menu = document.getElementById('ui-menu');
 
-        // Carregamento inicial: menu aparece após 3 segundos
+        
         window.onload = function() {
             setTimeout(() => {
                 menu.style.visibility = 'visible';
@@ -166,41 +166,37 @@
             }, 6000);
         };
 
-        // Função para trocar de Unidade (Header) com delay de 3 segundos no ressurgimento
+       
         function switchFullContext(unitName, menuKey, initialUrl, btn) {
             // 1. Inicia Fade-out imediato do menu lateral
             menu.style.transition = "opacity 0.5s ease-in-out";
             menu.style.opacity = '0';
             
             setTimeout(() => {
-                // 2. Atualiza Label e botões do topo
+             
                 document.getElementById('unit-label').innerText = unitName;
                 document.querySelectorAll('.btn-unit').forEach(b => b.classList.remove('active-unit'));
                 btn.classList.add('active-unit');
 
-                // 3. Troca o Grupo de Botões Laterais internamente
+         
                 document.querySelectorAll('.menu-group').forEach(g => g.classList.remove('active-group'));
                 const activeGroup = document.getElementById('menu-' + menuKey);
                 activeGroup.classList.add('active-group');
 
-                // 4. Carrega a primeira plataforma da nova unidade (Meta Ads)
                 const firstPlatBtn = activeGroup.querySelector('.btn-plat');
                 changeIframe(initialUrl, firstPlatBtn);
 
-                // 5. Fade-in suave do novo menu APÓS 3 segundos de carregamento do Dash
                 setTimeout(() => {
                     menu.style.transition = "opacity 1.5s ease-in-out";
                     menu.style.opacity = '1';
                 }, 3000); 
 
-            }, 500); // Aguarda o fade-out inicial terminar para processar as trocas
+            }, 500); 
         }
 
-        // Função para trocar apenas a plataforma (Botões Laterais)
         function changeIframe(url, btn) {
             if (!url) return;
 
-            // Escurece o iframe levemente durante a troca
             iframe.style.opacity = '0.3';
             
             setTimeout(() => {
