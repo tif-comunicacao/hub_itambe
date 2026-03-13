@@ -41,7 +41,7 @@
         }
         .btn-unit.active-unit { background-color: rgba(255,255,255,0.2); opacity: 1; border: 1px solid rgba(255,255,255,0.4); }
 
-        /* DASHBOARD AREA */
+
         .main-container { flex-grow: 1; display: flex; position: relative; overflow: hidden; }
         .dash-area { flex-grow: 1; position: relative; overflow: hidden; }
         
@@ -55,7 +55,7 @@
             transition: opacity 0.5s ease-in-out;
         }
 
-        /* MENU LATERAL COM TRANSIÇÃO LENTA (3 SEGUNDOS) */
+
         .platform-menu {
             position: fixed; 
             right: 60px; 
@@ -67,7 +67,7 @@
             z-index: 9999;
             opacity: 0; 
             visibility: hidden;
-            /* Suavidade da transição de opacidade */
+
             transition: opacity 1.5s ease-in-out, visibility 1.5s;
         }
         .menu-group { display: none; flex-direction: column; gap: 8px; }
@@ -168,7 +168,7 @@
 
        
         function switchFullContext(unitName, menuKey, initialUrl, btn) {
-            // 1. Inicia Fade-out imediato do menu lateral
+     
             menu.style.transition = "opacity 0.5s ease-in-out";
             menu.style.opacity = '0';
             
